@@ -60,9 +60,20 @@ db.departments.find()
 	from emp (bedeutet dass null Werte wenn sie miteinander addiert werden das sie NULL zurückgibt anstatt eine ganze Zahl)
       Select SAL+NVL(COMM) 
 	from emp (bedeutet das die NULL Werte als 0 berechnet werden und somit eine ganze lesbare Zahl dabei herauskommt)
-16. db.emps.find() (
 
 //neu ab hier
+
+16. 
+db.emps.aggregate([
+  {
+    $project: {
+      Name: "$ENAME",
+      Monthly: "$SAL",
+      Daily: { $divide: ["$SAL", 22] },
+      Hourly: { $divide: ["$SAL", { $multiply: [22, 8] }] }
+    }
+  }
+]);
 
 //17
 db.emps.aggregate([
